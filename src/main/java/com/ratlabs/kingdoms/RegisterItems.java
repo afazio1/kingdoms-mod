@@ -19,7 +19,7 @@ public class RegisterItems {
 
 
    public static void register() {
-      Registry.register(Registry.ITEM, new Identifier("kingdoms", "royal_crown"), ROYAL_HELMET);
+      Registry.register(Registry.ITEM, new Identifier("kingdoms", "royal_helmet"), ROYAL_HELMET);
       Registry.register(Registry.ITEM, new Identifier("kingdoms", "royal_chestplate"), ROYAL_CHESTPLATE);
       Registry.register(Registry.ITEM, new Identifier("kingdoms", "royal_leggings"), ROYAL_LEGGINGS);
       Registry.register(Registry.ITEM, new Identifier("kingdoms", "royal_boots"), ROYAL_BOOTS);
