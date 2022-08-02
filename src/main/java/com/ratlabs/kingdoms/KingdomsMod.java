@@ -3,27 +3,47 @@ package com.ratlabs.kingdoms;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.registry.Registry;
 
 import java.util.function.BooleanSupplier;
 
 public class KingdomsMod implements ModInitializer {
-    private static boolean worldGenerated = false;
+    private static boolean worldGeneratedClient = false;
+    private static boolean worldGeneratedServer = false;
 
     @Override
     public void onInitialize() {
         RegisterItems.register();
         ClientTickEvents.START_WORLD_TICK.register(world -> {
-
-            if (!worldGenerated && world.getTime() < 100) {
-                world.getPlayers().get(0).sendMessage(Text.literal("Welcome to the Kingdoms Mod!"));
-                worldGenerated = true;
-                // i dont think this does anything lol
-//                world.tick(() -> false);
-//                world.getPlayers().get(0).sendMessage(Text.literal(Long.toString(world.getTime())));
+            AbstractClientPlayerEntity player = world.getPlayers().get(0);
+            if (!worldGeneratedClient && world.getTime() < 100) {
+                player.sendMessage(Text.literal("Welcome to Kingdoms Mod"));
+                worldGeneratedClient = true;
             }
 
         });
+//        ServerTickEvents.START_WORLD_TICK.register(world -> {
+//
+//            if (!worldGeneratedServer && world.getTime() < 500) {
+//                worldGeneratedServer = true;
+//            }
+//        });
+        ServerPlayConnectionEvents.JOIN.register(((handler, sender, server) -> {
+            ServerPlayerEntity player = server.getCommandSource().getPlayer();
+            if (!worldGeneratedServer && player.getWorld().getTime() < 200) {
+                CommandManager commandManager = player.getServer().getCommandManager();
+                commandManager.executeWithPrefix(player.getCommandSource(), "/give @p written_book{pages:['{\"text\":\"Minecraft Tools book\"}'],title:\"Kingdoms Mod\",author:Alexa,generation:3,display:{Lore:[\"Hello this is the kingdoms mod. lore lol\"]}}");
+                worldGeneratedServer = true;
+            }
+        }));
 
 
     }

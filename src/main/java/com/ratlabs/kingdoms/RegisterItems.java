@@ -1,5 +1,6 @@
 package com.ratlabs.kingdoms;
 
+import com.ratlabs.kingdoms.armor.RoyalArmorMaterial;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
