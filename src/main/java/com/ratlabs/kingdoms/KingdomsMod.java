@@ -10,6 +10,7 @@ import net.minecraft.text.Text;
 
 
 public class KingdomsMod implements ModInitializer {
+    public static final String MOD_ID = "kingdoms";
     private static boolean worldGeneratedClient = false;
     private static boolean worldGeneratedServer = false;
 
